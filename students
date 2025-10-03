@@ -1,0 +1,80 @@
+def predmets(data):
+    subjects = {}
+    for entry in data:
+        subject = entry['Предмет']
+        if subject not in subjects:
+            subjects[subject] = []
+        subjects[subject].append(entry)
+    return subjects
+   
+def students(data):
+    students = {}
+    for entry in data:
+        student = entry['Студент']
+        if student not in students:
+            students[student] = []
+        students[student].append(entry)
+    return students
+
+students_data = [
+    {'Студент': 'Анна', 'Предмет': 'Математика', 'Балл': 99},{'Студент': 'Анна', 'Предмет': 'Физика', 'Балл': 86},{'Студент': 'Анна', 'Предмет': 'История', 'Балл': 73},{'Студент': 'Анна', 'Предмет': 'Литература', 'Балл': 99},{'Студент': 'Анна', 'Предмет': 'Информатика', 'Балл': 64},{'Студент': 'Иван', 'Предмет': 'Математика', 'Балл': 93},{'Студент': 'Иван', 'Предмет': 'Физика', 'Балл': 89},{'Студент': 'Иван', 'Предмет': 'История', 'Балл': 81},{'Студент': 'Иван', 'Предмет': 'Литература', 'Балл': 97},{'Студент': 'Иван', 'Предмет': 'Информатика', 'Балл': 100},{'Студент': 'Мария', 'Предмет': 'Математика', 'Балл': 98},{'Студент': 'Мария', 'Предмет': 'Физика', 'Балл': 86},{'Студент': 'Мария', 'Предмет': 'История', 'Балл': 92},{'Студент': 'Мария', 'Предмет': 'Литература', 'Балл': 56},{'Студент': 'Мария', 'Предмет': 'Информатика', 'Балл': 65},{'Студент': 'Дмитрий', 'Предмет': 'Математика', 'Балл': 76},{'Студент': 'Дмитрий', 'Предмет': 'Физика', 'Балл': 97},{'Студент': 'Дмитрий', 'Предмет': 'История', 'Балл': 82},{'Студент': 'Дмитрий', 'Предмет': 'Литература', 'Балл': 91},{'Студент': 'Дмитрий', 'Предмет': 'Информатика', 'Балл': 54},{'Студент': 'Ольга', 'Предмет': 'Математика', 'Балл': 50},{'Студент': 'Ольга', 'Предмет': 'Физика', 'Балл': 89},{'Студент': 'Ольга', 'Предмет': 'История', 'Балл': 77},{'Студент': 'Ольга', 'Предмет': 'Литература', 'Балл': 94},{'Студент': 'Ольга', 'Предмет': 'Информатика', 'Балл': 68},{'Студент': 'Сергей', 'Предмет': 'Математика', 'Балл': 100},{'Студент': 'Сергей', 'Предмет': 'Физика', 'Балл': 61},{'Студент': 'Сергей', 'Предмет': 'История', 'Балл': 80},{'Студент': 'Сергей', 'Предмет': 'Литература', 'Балл': 70},{'Студент': 'Сергей', 'Предмет': 'Информатика', 'Балл': 57},{'Студент': 'Наталья', 'Предмет': 'Математика', 'Балл': 73},{'Студент': 'Наталья', 'Предмет': 'Физика', 'Балл': 81},{'Студент': 'Наталья', 'Предмет': 'История', 'Балл': 95},{'Студент': 'Наталья', 'Предмет': 'Литература', 'Балл': 86},{'Студент': 'Наталья', 'Предмет': 'Информатика', 'Балл': 60},{'Студент': 'Павел', 'Предмет': 'Математика', 'Балл': 98},{'Студент': 'Павел', 'Предмет': 'Физика', 'Балл': 70},{'Студент': 'Павел', 'Предмет': 'История', 'Балл': 70},{'Студент': 'Павел', 'Предмет': 'Литература', 'Балл': 96},{'Студент': 'Павел', 'Предмет': 'Информатика', 'Балл': 88}]
+
+subjects = predmets(students_data)
+student_results = students(students_data)
+
+print("Средний балл по каждому предмету:")
+subject_averages = {}
+for subject_name, subject_data in subjects.items():
+    total = 0
+    for entry in subject_data:
+      score = entry['Балл']
+      total += score
+    average = total / len(subject_data)
+    subject_averages[subject_name] = average
+    print(f"{subject_name}: {average}")
+
+lowest_subject = min(subject_averages, key=subject_averages.get)
+print(f"\nПредмет с самым низким средним баллом: {lowest_subject} {subject_averages[lowest_subject]}")
+
+print("\nСредний балл каждого студента:")
+student_averages = {}
+for student, records in student_results.items():
+    total = 0
+    for entry in records:
+      score = entry['Балл']
+      total += score
+    average = total / len(records)
+    student_averages[student] = average
+    print(f"{student}: {average}")
+
+top_student = max(student_averages, key=student_averages.get)
+print(f"\nСтудент с наивысшим средним баллом: {top_student} {student_averages[top_student]}")
+
+print("\nЛучшие и худшие студенты по каждому предмету:")
+
+def best_and_worst(entries):
+    best = entries[0]
+    worst = entries[0]
+
+    for entry in entries:
+        if entry['Балл'] > best['Балл']:
+            best = entry
+        if entry['Балл'] < worst['Балл']:
+            worst = entry
+
+    return best, worst
+
+for subject, entries in subjects.items():
+    best, worst = best_and_worst(entries)
+    print(f"{subject}:")
+    print(f"  Лучший студент: {best['Студент']} {best['Балл']}")
+    print(f"  Худший студент: {worst['Студент']} {worst['Балл']}")
+
+print("\nОбщий рейтинг студентов:")
+def get_average(student_tuple):
+    return student_tuple[1]
+
+students_list_sorted = sorted(student_averages.items(), key=get_average, reverse=True)
+
+for position, (name, average) in enumerate(students_list_sorted, start=1):
+    print(f"{position}. {name}: {average}")
